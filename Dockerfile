@@ -15,8 +15,9 @@ RUN apt-key add /tmp/ACCC4CF8.asc
 RUN apt-get update
 RUN apt-get install -y postgresql-9.1 postgresql-contrib-9.1
 
-# And add ``listen_addresses`` to ``/usr/local/pgsql/data/postgresql.conf``
-# RUN echo "listen_addresses='*'" >> /usr/local/pgsql/data/postgresql.conf
+# Listen on all interface
+RUN sed "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/9.1/main/postgresql.conf > /tmp/postgresql.conf
+RUN mv /tmp/postgresql.conf /etc/postgresql/9.1/main/postgresql.conf
 
 # Add Postgres to runit
 RUN mkdir /etc/service/postgres
