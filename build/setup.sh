@@ -15,7 +15,7 @@ then
     /sbin/setuser postgres createdb $DATABASE_NAME
     # wARNING This way the password is set is not very secure
     # to be reviewed..
-    /sbin/setuser postgres echo "create user $DATABASE_USER password '$DATABASE_PASSWORD'" | psql -c
+    /sbin/setuser postgres psql -c "create user $DATABASE_USER password '$DATABASE_PASSWORD'"
     /sbin/setuser postgres psql -c 'GRANT ALL PRIVILEGES ON DATABASE $DATABASE_NAME TO $DATABASE_USER;'
     # Give access to outside world with password auth
     echo "host    all             all             172.17.0.0/16           md5
