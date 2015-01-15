@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # If empty data directory
-if [ ! -f /var/lib/postgresql/9.1/main/PG_VERSION ]
+if [ ! -f /var/lib/postgresql/9.1/main/PG_VERSION ] && [ "$DATABASE_NAME" ] && [ "$DATABASE_USER" ] && [ "$DATABASE_PASSWORD" ]
 then
     # Create postgres data directory
     mkdir -p /var/lib/postgresql/9.1/main
@@ -12,9 +12,11 @@ then
     /usr/bin/pg_ctlcluster "9.1" main start
 
     # Create users and databases here
-    /sbin/setuser postgres createdb mydb
-    /sbin/setuser postgres createuser -DRS myuser
-    /sbin/setuser postgres psql -c 'GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;'
+    /sbin/setuser postgres createdb $DATABASE_NAME
+    # wARNING This way the password is set is not very secure
+    # to be reviewed..
+    /sbin/setuser postgres echo "create user $DATABASE_USER password '$DATABASE_PASSWORD'" | psql -c
+    /sbin/setuser postgres psql -c 'GRANT ALL PRIVILEGES ON DATABASE $DATABASE_NAME TO $DATABASE_USER;'
     # Give access to outside world with password auth
     echo "host    all             all             172.17.0.0/16           md5
 " >> /etc/postgresql/9.1/main/pg_hba.conf
