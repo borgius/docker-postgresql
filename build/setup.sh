@@ -5,7 +5,7 @@ if [ ! -f /var/lib/postgresql/9.1/main/PG_VERSION ] && [ "$DATABASE_NAME" ] && [
 then
     # Create postgres data directory
     mkdir -p /var/lib/postgresql/9.1/main
-    chown postgres:postgres /var/lib/postgresql/9.1/main
+    chown -R postgres:postgres /var/lib/postgresql/
     /sbin/setuser postgres /usr/lib/postgresql/9.1/bin/initdb /var/lib/postgresql/9.1/main/
 
     # Start postgresql
