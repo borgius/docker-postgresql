@@ -18,6 +18,9 @@ RUN apt-get install -y postgresql-9.1 postgresql-contrib-9.1
 # Listen on all interface
 RUN sed "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /etc/postgresql/9.1/main/postgresql.conf > /tmp/postgresql.conf
 RUN mv /tmp/postgresql.conf /etc/postgresql/9.1/main/postgresql.conf
+# Give access to outside world with password auth
+RUN echo "host    all             all             172.17.0.0/16           md5" >> /etc/postgresql/9.1/main/pg_hba.conf
+
 
 # Add Postgres to runit
 RUN mkdir /etc/service/postgres
