@@ -7,6 +7,9 @@ FROM phusion/baseimage:latest
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
+# Disable SSH
+RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
+
 # Install postgres
 RUN locale-gen en_US.UTF-8
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main' | tee /etc/apt/sources.list.d/pgdg.list
